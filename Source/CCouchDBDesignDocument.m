@@ -35,7 +35,7 @@
     if ((self = [super init]) != NULL)
         {
         database = inDatabase;
-        identifier = [inIdentifier retain];
+        identifier = inIdentifier;
         }
     return(self);
     }
@@ -44,10 +44,7 @@
     {
     database = NULL;
 
-    [identifier release];
-    identifier = NULL;
     //
-    [super dealloc];
     }
 
 #pragma mark -

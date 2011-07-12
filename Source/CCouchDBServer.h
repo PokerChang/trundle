@@ -1,6 +1,6 @@
 //
 //  CCouchDBServer.h
-//  CouchTest
+//  trundle
 //
 //  Created by Jonathan Wight on 02/16/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.

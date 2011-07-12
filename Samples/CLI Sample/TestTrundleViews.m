@@ -1,13 +1,13 @@
 //
 //  TestTrundleViews
 //
+//  Created by Marty Schoch on 6/19/11.
+//  Copyright 2011 Marty Schoch. All rights reserved.
+//
+
 //  Uses a CouchDB database at:  http://mschoch.couchone.com/trundle_view_test/
 //  with a design document at: http://mschoch.couchone.com/trundle_view_test/_design/test
 //  this design document contains views returning various combinations of output
-//
-//  Created by Marty Schoch on 6/19/11.
-//  Copyright 2011 Marty Schoch.
-//
 
 #import <Foundation/Foundation.h>
 #import "CCouchDBServer.h"

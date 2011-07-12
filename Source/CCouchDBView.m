@@ -1,9 +1,9 @@
 //
 //  CCouchDBView.m
-//  CouchpadAdministrator
+//  trundle
 //
 //  Created by Marty Schoch on 6/18/11.
-//  Copyright 2011 Marty Schoch.
+//  Copyright 2011 Marty Schoch. All rights reserved.
 //
 
 #import "CCouchDBView.h"

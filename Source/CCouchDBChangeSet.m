@@ -1,6 +1,6 @@
 //
 //  CCouchDBChangeSet.m
-//  AnythingBucket
+//  trundle
 //
 //  Created by Jonathan Wight on 11/03/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -36,7 +36,7 @@
 		}
 	return(self);
 	}
-	
+
 #pragma mark -
 
 - (NSString *)description
@@ -49,12 +49,12 @@
 	NSMutableSet *theResults = [NSMutableSet setWithArray:[inJSON objectForKey:@"results"]];
 	NSSet *theDeletedDocuments = [theResults filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"deleted == YES"]];
 	[theResults minusSet:theDeletedDocuments];
-	
+
 	self.changedDocumentIdentifiers = [theResults valueForKey:@"id"];
 	self.changedDocuments = [theResults valueForKey:@"doc"];
 	self.deletedDocumentsIdentifiers = [theDeletedDocuments valueForKey:@"id"];
 	self.lastSequence = [[inJSON objectForKey:@"last_seq"] integerValue];
-	
+
 	return(YES);
 	}
 

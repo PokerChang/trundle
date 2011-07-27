@@ -1,6 +1,6 @@
 //
 //  CCouchDBDesignDocument.m
-//  AnythingBucket
+//  trundle
 //
 //  Created by Jonathan Wight on 10/21/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -93,9 +93,9 @@
             CCouchDBViewRow *viewRow = [[CCouchDBViewRow alloc] initWithKey:key value:value document:theDocument];
             [theViewRows addObject:viewRow];
             }
-        
+
         NSInteger theTotalRows = [[inParameter objectForKey:@"total_rows"] integerValue];
-        NSInteger theOffset = [[inParameter objectForKey:@"offset"] integerValue];        
+        NSInteger theOffset = [[inParameter objectForKey:@"offset"] integerValue];
         CCouchDBView *theView = [[CCouchDBView alloc] initWithTotalRows:theTotalRows offset:theOffset rows:theViewRows];
 
         if (inSuccessHandler)

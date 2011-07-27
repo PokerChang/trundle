@@ -1,6 +1,6 @@
 //
 //  CCouchDBDesignDocument.h
-//  AnythingBucket
+//  trundle
 //
 //  Created by Jonathan Wight on 10/21/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.

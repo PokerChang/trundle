@@ -231,6 +231,9 @@ return(self);
     [theRequest setHTTPBody:inAttachment.data];
 
     CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.failureHandler = ^(NSError*error){
+        NSLog(@"%@", [error description]);
+    };
     theOperation.successHandler = ^(id inParameter) {
         if ([[inParameter objectForKey:@"ok"] boolValue] == NO)
             {

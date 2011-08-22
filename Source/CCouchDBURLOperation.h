@@ -1,6 +1,6 @@
 //
 //  CCouchDBURLOperation.h
-//  CouchTest
+//  trundle
 //
 //  Created by Jonathan Wight on 04/14/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.

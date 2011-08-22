@@ -1,6 +1,6 @@
 //
 //  CCouchDBServer.m
-//  CouchTest
+//  trundle
 //
 //  Created by Jonathan Wight on 02/16/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -15,6 +15,7 @@
 #import "CouchDBClientConstants.h"
 #import "CCouchDBURLOperation.h"
 #import "NSData_Base64Extensions.h"
+#import "CFilteringJSONSerializer.h"
 	
 @interface CCouchDBServer ()
 @property (readonly, retain) NSMutableDictionary *databasesByName;
@@ -225,5 +226,84 @@
 	theOperation.failureHandler = inFailureHandler;
 	return(theOperation);
 	}
+
+- (CURLOperation *)operationToFetchSessionWithSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler
+    {
+    NSURL *theURL = [self.URL URLByAppendingPathComponent:@"_session"];
+    NSMutableURLRequest *theRequest = [self requestWithURL:theURL];
+    theRequest.HTTPMethod = @"GET";
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Accept"];
+    CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.successHandler = inSuccessHandler;    
+    theOperation.failureHandler = inFailureHandler;
+    return(theOperation);
+    }
+
+- (CURLOperation *)operationToFetchConfigurationWithSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler 
+    {
+    NSURL *theURL = [self.URL URLByAppendingPathComponent:@"_config"];
+    NSMutableURLRequest *theRequest = [self requestWithURL:theURL];
+    theRequest.HTTPMethod = @"GET";
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Accept"];
+    
+    CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.successHandler = inSuccessHandler;
+    theOperation.failureHandler = inFailureHandler;    
+    return(theOperation);        
+    }
+
+- (CURLOperation *)operationToUpdateConfigurationKey:(NSString *)inConfigurationKey inSection:(NSString*)inConfigurationSection withValue:(id)inConfigurationValue withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler 
+    {
+    NSString *thePath = [NSString stringWithFormat:@"_config/%@/%@", inConfigurationSection, inConfigurationKey];
+    NSURL *theURL = [self.URL URLByAppendingPathComponent:thePath];
+    NSMutableURLRequest *theRequest = [self requestWithURL:theURL];
+    theRequest.HTTPMethod = @"PUT";
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Accept"];
+    
+    NSData *theData = [self.session.serializer serializeObject:inConfigurationValue error:NULL];
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Content-Type"];
+    [theRequest setHTTPBody:theData];
+    
+    CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.successHandler = inSuccessHandler;
+    theOperation.failureHandler = inFailureHandler;
+    return(theOperation);      
+    }
+
+- (CURLOperation *)operationToDeleteConfigurationKey:(NSString *)inConfigurationKey inSection:(NSString*)inConfigurationSection withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler 
+    {
+    NSString *thePath = [NSString stringWithFormat:@"_config/%@/%@", inConfigurationSection, inConfigurationKey];
+    NSURL *theURL = [self.URL URLByAppendingPathComponent:thePath];
+    NSMutableURLRequest *theRequest = [self requestWithURL:theURL];
+    theRequest.HTTPMethod = @"DELETE";
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Accept"];
+    
+    CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.successHandler = inSuccessHandler;
+    theOperation.failureHandler = inFailureHandler;
+    return(theOperation);     
+    }
+
+- (CURLOperation *)operationToTriggerReplicationFromSource:(NSString *)inSource toTarget:(NSString *)inTarget withOptions:(NSDictionary *)inOptions successHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler
+{
+    NSURL *theURL = [self.URL URLByAppendingPathComponent:@"_replicate"];
+    NSMutableDictionary *replicationSettings = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:inSource, @"source", inTarget, @"target", nil] autorelease];
+    if (inOptions.count > 0)
+    {
+		[replicationSettings addEntriesFromDictionary:inOptions];
+    }
+    NSMutableURLRequest *theRequest = [self requestWithURL:theURL];
+    theRequest.HTTPMethod = @"POST";
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Accept"];
+    
+    NSData *theData = [self.session.serializer serializeObject:replicationSettings error:NULL];
+    [theRequest setValue:kContentTypeJSON forHTTPHeaderField:@"Content-Type"];
+    [theRequest setHTTPBody:theData];    
+    
+    CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.successHandler = inSuccessHandler;    
+    theOperation.failureHandler = inFailureHandler;
+    return(theOperation);
+}
 
 @end

@@ -1,6 +1,6 @@
 //
 //  CCouchDBServer.h
-//  CouchTest
+//  trundle
 //
 //  Created by Jonathan Wight on 02/16/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -36,5 +36,13 @@
 - (CURLOperation *)operationToFetchDatabasesWithSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
 - (CURLOperation *)operationToFetchDatabaseNamed:(NSString *)inName withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
 - (CURLOperation *)operationToDeleteDatabase:(CCouchDBDatabase *)inDatabase withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
+
+- (CURLOperation *)operationToFetchSessionWithSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
+
+- (CURLOperation *)operationToFetchConfigurationWithSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
+- (CURLOperation *)operationToUpdateConfigurationKey:(NSString *)inConfigurationKey inSection:(NSString*)inConfigurationSection withValue:(id)inConfigurationValue withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
+- (CURLOperation *)operationToDeleteConfigurationKey:(NSString *)inConfigurationKey inSection:(NSString*)inConfigurationSection withSuccessHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
+
+- (CURLOperation *)operationToTriggerReplicationFromSource:(NSString *)inSource toTarget:(NSString *)inTarget withOptions:(NSDictionary *)inOptions successHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler;
 
 @end

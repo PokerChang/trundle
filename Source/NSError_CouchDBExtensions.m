@@ -1,6 +1,6 @@
 //
 //  NSError_CouchDBExtensions.m
-//  CLI Sample
+//  trundle
 //
 //  Created by Jonathan Wight on 05/26/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  CCouchDBDocument.m
-//  CouchTest
+//  trundle
 //
 //  Created by Jonathan Wight on 02/16/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -182,7 +182,7 @@ return(self);
 
 - (NSURL *)URL
     {
-    return([self.database.URL URLByAppendingPathComponent:self.encodedIdentifier]);
+    return([self.database.URL URLByAppendingPathComponent:self.identifier]);
     }
 
 #pragma mark -

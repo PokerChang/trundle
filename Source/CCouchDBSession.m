@@ -1,6 +1,6 @@
 //
 //  CCouchDBSession.m
-//  TouchMetricsTest
+//  trundle
 //
 //  Created by Jonathan Wight on 08/21/10.
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
@@ -61,7 +61,7 @@
 	{
 	if (serializer == NULL) 
 		{
-		CFilteringJSONSerializer *theSerializer = [CFilteringJSONSerializer serializer];
+		CFilteringJSONSerializer *theSerializer = (CFilteringJSONSerializer *)[CFilteringJSONSerializer serializer];
 		theSerializer.convertersByName = [NSDictionary dictionaryWithObjectsAndKeys:
 			[[^(NSDate *inDate) { return((id)[inDate ISO8601String]); } copy] autorelease], @"date",
 			[[^(CJSONSerializedData *inObject) { return((id)inObject.data); } copy] autorelease], @"JSONSerializedData",

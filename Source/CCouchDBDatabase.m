@@ -19,6 +19,7 @@
 #import "CCouchDBDesignDocument.h"
 #import "CCouchDBView.h"
 #import "CCouchDBViewRow.h"
+#import "CCouchDBAttachment.h"
 
 @interface CCouchDBDatabase ()
 @property (readonly, retain) NSMutableDictionary *designDocuments;
@@ -222,7 +223,17 @@
 
 	return(theOperation);
 	}
-
+- (CURLOperation *)operationToFetchAttachment:(CCouchDBAttachment*)attachment inDocument:(CCouchDBDocument *)inDocument successHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler{
+	NSURL *theURL = [inDocument.URL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@", attachment.identifier]];
+	NSMutableURLRequest *theRequest = [self.server requestWithURL:theURL];
+	theRequest.HTTPMethod = @"GET";
+	//[theRequest setValue:attachment.contentType forHTTPHeaderField:@"Accept"];
+	CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+	theOperation.successHandler = inSuccessHandler;
+	theOperation.failureHandler = inFailureHandler;
+    
+	return(theOperation);
+}
 #pragma mark -
 
 - (CURLOperation *)operationToUpdateDocument:(CCouchDBDocument *)inDocument successHandler:(CouchDBSuccessHandler)inSuccessHandler failureHandler:(CouchDBFailureHandler)inFailureHandler

@@ -66,38 +66,52 @@
 	NSError *theError = NULL;
 
 	NSString *theContentType = [theHTTPResponse.allHeaderFields objectForKey:@"Content-Type"];
+    NSInteger theStatusCode = theHTTPResponse.statusCode;
+
 	if ([theContentType isEqualToString:kContentTypeJSON] == NO)
-		{
-		theError = [NSError errorWithDomain:kCouchErrorDomain code:CouchDBErrorCode_ContentTypeNotJSON userInfo:NULL];
-		}
+    {
+        //don't check content type in order to fetch attachment
+		//theError = [NSError errorWithDomain:kCouchErrorDomain code:CouchDBErrorCode_ContentTypeNotJSON userInfo:NULL];
+        if (theStatusCode < 200 || theStatusCode >= 300)
+        {
+            theError = [NSError couchDBErrorWithURLResponse:self.response JSONDictionary:nil];
+        }
 
-	id theJSON = NULL;
-	if (theError == NULL)
-		{
-		theJSON = [[self.session deserializer] deserialize:self.data error:&theError];
-		NSInteger theStatusCode = theHTTPResponse.statusCode;
-		if (theJSON == NULL || theStatusCode < 200 || theStatusCode >= 300)
-			{
-			theError = [NSError couchDBErrorWithURLResponse:self.response JSONDictionary:theJSON];
-			}
-		}
-
-	if (theError != NULL)
-		{
-		[self didFailWithError:theError];
-		}
-	else
-		{
-		self.JSON = theJSON;
-		
-		if (self.successHandler)
-			{
-			self.successHandler(theJSON);
-			}
-
-		[super didFinish];
-		}
+        if (self.successHandler)
+        {
+            self.successHandler(self.data);
+        }
+        
+        [super didFinish];
 	}
+    else{
+        id theJSON = NULL;
+        if (theError == NULL)
+            {
+            theJSON = [[self.session deserializer] deserialize:self.data error:&theError];
+            if (theJSON == NULL || theStatusCode < 200 || theStatusCode >= 300)
+                {
+                theError = [NSError couchDBErrorWithURLResponse:self.response JSONDictionary:theJSON];
+                }
+            }
+
+        if (theError != NULL)
+            {
+            [self didFailWithError:theError];
+            }
+        else
+            {
+            self.JSON = theJSON;
+            
+            if (self.successHandler)
+                {
+                self.successHandler(theJSON);
+                }
+
+            [super didFinish];
+            }
+        }
+    }
 
 - (void)didFailWithError:(NSError *)inError
     {

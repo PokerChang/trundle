@@ -222,7 +222,6 @@ return(self);
 // TODO this is just a quick hack for attachments. Needs a lot more work.
 - (void)addAttachment:(CCouchDBAttachment *)inAttachment
 {
-    //NSURL *theURL = [[self.URL absoluteURL] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@?rev=%@", inAttachment.identifier, self.revision]];
     NSURL *theURL = [NSURL URLWithString:[[self.URL absoluteString] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@?rev=%@", inAttachment.identifier, self.revision]]];
 
     NSMutableURLRequest *theRequest = [self.server requestWithURL:theURL];

@@ -319,6 +319,7 @@
     [theRequest setHTTPBody:theData];
 
     CCouchDBURLOperation *theOperation = [self.session URLOperationWithRequest:theRequest];
+    theOperation.failureHandler = inFailureHandler;
     theOperation.successHandler = ^(id inParameter) {
         if (theOperation.error)
             {
